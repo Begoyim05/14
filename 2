@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <string>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector< set<int> > adj(n);
+
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        cin >> u >> v;
+        if (u == v) continue; 
+        adj[u].insert(v);
+        adj[v].insert(u);
+    }
+
+    int q;
+    cin >> q;
+
+    while (q--) {
+        string type;
+        cin >> type;
+
+        if (type == "ADD") {
+            int u, v;
+            cin >> u >> v;
+            if (u != v) {
+                adj[u].insert(v);
+                adj[v].insert(u);
+            }
+        }
+
+        else if (type == "REM") {
+            int u, v;
+            cin >> u >> v;
+            adj[u].erase(v);
+            adj[v].erase(u);
+        }
+
+        else if (type == "NEIGH") {
+            int v;
+            cin >> v;
+
+            if (adj[v].empty()) {
+                cout << "NONE\n";
+            } else {
+                bool first = true;
+                for (int to : adj[v]) {
+                    if (!first) cout << " ";
+                    cout << to;
+                    first = false;
+                }
+                cout << "\n";
+            }
+        }
+        else if (type == "DEG") {
+            int v;
+            cin >> v;
+            cout << adj[v].size() << "\n";
+        }
+    }
+
+    return 0;
+}
